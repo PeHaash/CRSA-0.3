@@ -16,9 +16,6 @@ desktop.ini
 # documentations & sketches
 /docs
 
-# old code base
-/old src
-
 # objects & binaries
 *.o
 *.bat
