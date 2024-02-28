@@ -1,0 +1,42 @@
+# git send to github command "git push github main"
+
+## git make new branck:
+# git branch new_one
+## git switch between branches:
+# git checkout with_private_pages
+
+
+
+# because of windows
+desktop.ini
+
+# python
+*/__pycache__
+
+# documentations & sketches
+/docs
+
+# old code base
+/old src
+
+# objects & binaries
+*.o
+*.bat
+*.exe
+
+# output files
+*.tbge
+
+# prototypes, half-baked ideas and other sketches
+/proto_*
+
+# Sublime projects
+*.sublime-project
+*.sublime-workspace
+
+# Other files
+Acknowledgment.txt
+file structure.txt
+crsa_rules.txtf
+/wrapperExample
+
