@@ -19,6 +19,7 @@ we need to define:
 */
 
 #include <cstdint>
+#include <vector>
 
 #include "CSharedArrays.h"
 
@@ -53,12 +54,16 @@ struct Features{
     uint32_t Width, Height;
     double SizeOfGridByCM;  // cm: default 10
     double TrueNorth;       // radian, True north ()
+
+    int SubspaceCount;
 };
 
 
 class DualGridImplementer{
 private:
-    Features m_features;
+    uint32_t Width, Height;
+    double SizeOfGridByCM;  // cm: default 10
+    double TrueNorth;       // radian, True north ()
 public:
     DualGridImplementer(Features);
 
@@ -92,9 +97,20 @@ private:
         CSA_Double64& CSError,
         CSA_Double64& Scores);
 	// I think maybe better than keeping in the private methods of class, because ... no meaning
+
+
+	// other definitions:
+	struct Subspace{
+		int MinX, MinY, MaxX, MaxY;
+		int RoomCode;
+	};
+	// Big data parts of the code:
+	std::vector<std::vector<char>> WIP_Grid;
+	std::vector<Subspace> WS_;
+	std::vector<Subspace> CS_;
 };
 
-
+// The helpfile:
 /*
 		ExportPrototype OneWayOfImplementing::ImplementationCore(InputData& input, Scores& output,  bool ForExport){
 		     // it has the core logic of implementation, and evaluation. but it may have not all the logic of export.
@@ -115,3 +131,5 @@ private:
 		    // return output;
 		}
 */
+
+
