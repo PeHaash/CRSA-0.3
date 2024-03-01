@@ -20,7 +20,7 @@ we need to define:
 
 #include <cstdint>
 
-#include "include/CSharedArrays.h"
+#include "CSharedArrays.h"
 
 // kamel nist
 struct Objectives{
