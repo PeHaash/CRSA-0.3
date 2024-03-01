@@ -22,7 +22,6 @@ DualGridImplementer::DualGridImplementer(Features feat):
 	return 0;
 }*/
 
-
 int ConvertToBase(int s, double N){
 	// convert double N that is in range[0,1) to  an output in range [0...s]
 	// return number [0,s) for N from [0,1)
@@ -34,12 +33,47 @@ uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j){
 	return i * Width + j;
 }
 
+int32_t DualGridImplementer::ImplementAndEvaluate(CSA_Char8& InputGrid,CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, 
+		CSA_Double64& WSError, CSA_Double64& CSError, CSA_Double64& Scores){
+	ImplementationCore(false, InputGrid, WhiteSpace, ColoredSpace, WSError, CSError, Scores);
+	ClearSharedMemmory();
+	return 0;
+}
+
+int32_t DualGridImplementer::ImplementAndExport(CSA_Char8& InputGrid, CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace,
+		CSA_Double64& WSError, CSA_Double64& CSError, CSA_Double64& Scores, CSA_Char8& ExportGrid){
+	
+	#ifdef __PEDANTIC__
+		// Assert the correct size of ExportGrid
+	#endif
+
+	ExportPrototype imp = ImplementationCore(true, InputGrid, WhiteSpace, ColoredSpace, WSError, CSError, Scores);
+	if(imp.ReadyForImplementaion == false) return 1;
+
+	for (uint32_t i = 0; i < Width; i++)
+		for(uint32_t j = 0; j < Height; j++){
+			// B,O,A,E,T,-
+			char ch = WIP_WGrid[i][j];
+			if(ch == 1){
+				ch = 'E'; //bEdroom
+			}
+			else if(ch == 2){
+				ch = 'T'; // baThroom
+			}
+			ExportGrid.data[ijCoordsto1D(i,j)] = WIP_WGrid[i][j];
+		}
+
+	return 0;
+
+}
+
+
 void DualGridImplementer::ClearSharedMemmory(){
-    for (auto &row : WIP_WGrid)
-    	for(auto &cell: row)
-    		cell = '-';
-    for(auto subs: WS_)
-    	subs = Subspace(Width, Height); // cleaning the whole mess
+	for (auto &row : WIP_WGrid)
+		for(auto &cell: row)
+			cell = '-';
+	for(auto subs: WS_)
+		subs = Subspace(Width, Height); // cleaning the whole mess
 }
 
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
@@ -64,6 +98,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
+	ExportPrototype out = ExportPrototype{false};
 
 
 	// WIP_WGrid ro por mikonim
@@ -72,11 +107,12 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert n < 256
 	#endif
 	for (int i = 0; i < n; i++)
-		WS_[i].RoomCode = i/WhiteSubspacePerRoom;
+		WS_[i].RoomCode = i / WhiteSubspacePerRoom + 1;
+
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
-			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: rooms
+			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
 			if(ssIndex != -1) WS_[ssIndex].UpdateWith(i, j);
 		}
 
@@ -102,8 +138,8 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	}
 	if(errors_in_overlap != 0){
 		obj->NoOverlapInWS = 0;
-		ClearSharedMemmory();
-		return ExportPrototype{false};
+		// ClearSharedMemmory();
+		return out;
 	}
 
 	// Add the Input, and supperimpose it!
@@ -137,7 +173,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 
 
-
-	return ExportPrototype();
+	out.ReadyForImplementaion = true;
+	return out;
 
 }
