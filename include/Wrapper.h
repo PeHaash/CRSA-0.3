@@ -1,7 +1,7 @@
 #include "DualGridImplementation.h"
 
 extern "C"{
-	void* c_MakeDGI(Features);
+	void* c_MakeDGI(Features fet);
 	// void c_SetFeature(void*, Features);
 	int32_t c_ImplementAndEvaluate(
 		void* DGI,
@@ -20,7 +20,7 @@ extern "C"{
 		CSA_Double64& CSError,
 		CSA_Double64& Scores,
 		CSA_Char8& ExportGrid);
-	void c_DeleteDGI(void*);
+	int32_t c_DeleteDGI(void*);
 
 }
 
