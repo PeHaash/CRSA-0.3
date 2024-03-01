@@ -16,16 +16,20 @@
 
 #include "CSharedArrays.h"
 
+// consts:
+const uint32_t NUMBER_OF_ROOMS = 2;
+
+
 // kamel nist
 struct Objectives{
-    // first part:
-    double NoRoomInTheBOA;  // 'B'lockec, 'O'utside, 'A'ccess
-    double NoOverlapInWS;       // The most important part
-    // second:
-    double NoOverlapbetweenCS;  // The most important part
-    double CirculationAccessAll;
-
-
+	double NoOverlapInWS;
+	double UseAllSpaces;
+    // // first part:
+    // double NoRoomInTheBOA;  // 'B'lockec, 'O'utside, 'A'ccess
+    // double NoOverlapInWS;       // The most important part
+    // // second:
+    // double NoOverlapbetweenCS;  // The most important part
+    // double CirculationAccessAll;
 };
 
 // just guidelines
@@ -107,8 +111,23 @@ private:
 			RoomCode = -1;
 			SubspaceCode = -1;
 		}
+		Subspace(uint32_t w, uint32_t h){
+			MaxX = 0; MaxY = 0; // 0: omran be kar bian!!! aslan nemish 0 beshe hichvaght
+			MinX = w + 3;
+			MinY = h + 3;
+			RoomCode = -1;
+			SubspaceCode = -1;
+		}
+		void UpdateWith(uint32_t i, uint32_t j){
+			MinX = std::min(MinX, i);
+			MinY = std::min(MinY, j);
+			MaxX = std::max(MaxX, i + 1);
+			MaxY = std::max(MaxY, j + 1);
+		}
 	};
 	// Big data parts of the code:
+	void ClearSharedMemmory();
+	uint32_t ijCoordsto1D(uint32_t, uint32_t);
 	std::vector<std::vector<char>> WIP_WGrid;
 	std::vector<Subspace> WS_;
 	std::vector<Subspace> CS_;

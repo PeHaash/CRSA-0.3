@@ -6,9 +6,9 @@
 
 DualGridImplementer::DualGridImplementer(Features feat):
 		Width(feat.Width),Height(feat.Height), SizeOfGridByCM(feat.SizeOfGridByCM), TrueNorth(feat.TrueNorth),
-		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom * 2),
+		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS),
 		WIP_WGrid(feat.Height, std::vector<char>(feat.Width, '-')),
-		WS_(feat.WhiteSubspacePerRoom * 2, Subspace(feat)) // 2: Bedroom & Bathroom
+		WS_(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS, Subspace(feat)) // 2: Bedroom & Bathroom
 		{
 
 }
@@ -30,16 +30,43 @@ int ConvertToBase(int s, double N){
 	return std::min(static_cast<int>(std::floor(N * s)), s - 1);
 }
 
+uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j){
+	return i * Width + j;
+}
+
+void DualGridImplementer::ClearSharedMemmory(){
+    for (auto &row : WIP_WGrid)
+    	for(auto &cell: row)
+    		cell = '-';
+    for(auto subs: WS_)
+    	subs = Subspace(Width, Height); // cleaning the whole mess
+}
+
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(CSA_Char8& InputGrid, CSA_Double64& WhiteSpace, 
 		CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError, CSA_Double64& Scores){
 
 	#ifdef __PEDANTIC__
-		// assert the correct sizes of inputs!
-	#endif 
+		// assert all the Scores are -1
+	#endif
+
+	#ifdef __PEDANTIC__
+		// assert the correct sizes of inputs
+	#endif
+
+	#ifdef __PEDANTIC__
+		// assert there is some 'F' in the InputGrid
+	#endif
+
+	#ifdef __PEDANTIC__
+		// assert all WSErros, CSError is 0
+	#endif
+
+
+	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 
 
 	// WIP_WGrid ro por mikonim
-	int n = 2 * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
+	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
 	#ifdef __PEDANTIC__
 		// assert n < 256
 	#endif
@@ -48,41 +75,57 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(CSA
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
-			WIP_WGrid[i][j] = ConvertToBase(n, WhiteSpace.data[i * Width + j]) - 1; // -1: empty shit, 0...s*2: rooms
-			char ssIndex = WIP_WGrid[i][j];
-			if(ssIndex != -1){
-				// POTENTIAL FOR A NEW FUNCTION, MAKE IT CLEANER WS_[ssIndex].UpdateWith(i, j);
-				WS_[ssIndex].MinX = std::min(WS_[ssIndex].MinX, i);
-				WS_[ssIndex].MinY = std::min(WS_[ssIndex].MinY, j);
-				WS_[ssIndex].MaxX = std::max(WS_[ssIndex].MaxX, i + 1);
-				WS_[ssIndex].MaxY = std::max(WS_[ssIndex].MaxY, j + 1);
-			}
+			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: rooms
+			if(ssIndex != -1) WS_[ssIndex].UpdateWith(i, j);
 		}
 
-	for (uint32_t i = 0; i < Width; i++)
-		for(uint32_t j = 0; j < Height; j++)
-			WIP_WGrid[i][j] = -1;
-
+	// assert Overlap
+	int errors_in_overlap = 0;
 	for (int it = 0; it < n; it++){
 		if(WS_[it].MaxX != 0){
 			int code = WS_[it].RoomCode;
 			for(uint32_t i = WS_[it].MinX; i < WS_[it].MaxX; i++){
 				for(uint32_t j = WS_[it].MinY; j < WS_[it].MaxY; j++){
-					if(WIP_WGrid[i][j] == -1){
+					if(WIP_WGrid[i][j] == '-'){
 						WIP_WGrid[i][j] = code; // so cute and great!
 					}else if(WIP_WGrid[i][j] != code){
 						// shit :// overlap with another room
-						WSError.data[i * Width + j] = 1; // (or ++, idk)
+						WSError.data[ijCoordsto1D(i, j)] = 1; // (or ++, idk)
+						errors_in_overlap ++;
 					}else{
 						// nothing to do: this means overlap with the same room
 					}
-
 				}
 			}
-
-
 		}
 	}
+	if(errors_in_overlap != 0){
+		obj->NoOverlapInWS = 0;
+		ClearSharedMemmory();
+		return ExportPrototype{false};
+	}
+
+	// Add the Input, and supperimpose it!
+	// check the second objective: UseAllSpaces
+	uint32_t available_grids_count = 0, unused_grids_count = 0; // availabe_grid_count > 0, bc we have some 'F's
+	for (uint32_t i = 0; i < Width; i++)
+		for(uint32_t j = 0; j < Height; j++){
+			char& inp = InputGrid.data[ijCoordsto1D(i, j)];
+			if(inp == 'B' || inp == 'O' || inp == 'A'){
+				WIP_WGrid[i][j] = inp;
+			}
+			else{
+				// inp == 'F'
+				available_grids_count++;
+				if(WIP_WGrid[i][j]=='-'){
+					unused_grids_count++;
+					WSError.data[ijCoordsto1D(i, j)]++;
+				}
+			}
+		}
+
+	obj->UseAllSpaces = unused_grids_count / available_grids_count;
+
 
 
 
