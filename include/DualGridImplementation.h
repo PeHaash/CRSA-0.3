@@ -33,6 +33,7 @@ struct Objectives{
 };
 
 // just guidelines
+/*
 struct InputData{
 	CSA_Char8 InputGrid;
 	CSA_Double64 WhiteSpace, ColoredSpace;
@@ -46,6 +47,7 @@ struct OutputForEvaluation{
 struct OutputForExport{
 	CSA_Double64 Export;
 };
+*/
 
 struct Features{
 	uint32_t Width, Height;
