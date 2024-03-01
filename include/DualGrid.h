@@ -5,14 +5,7 @@
 */
 
 
-/*
-we need to define:
-    Objectives (a struct) ----
-    InputData (a type of CSA) ---
-    Export (type of CSA)
-    Features (shared struct between here & python)
-    DeterministicEnvironment (main class of the code)
-*/
+
 
 /*
     
@@ -55,19 +48,22 @@ struct Features{
     double SizeOfGridByCM;  // cm: default 10
     double TrueNorth;       // radian, True north ()
 
-    int SubspaceCount;
+    uint32_t WhiteSubspacePerRoom; // subspace per WS
 };
 
 
 class DualGridImplementer{
 private:
+    // features
     uint32_t Width, Height;
     double SizeOfGridByCM;  // cm: default 10
     double TrueNorth;       // radian, True north ()
+    uint32_t WhiteSubspacePerRoom;
+
 public:
     DualGridImplementer(Features);
 
-    int32_t SetFeature(Features);
+    // int32_t SetFeature(Features); later
 
     int32_t ImplementAndEvaluate(
         CSA_Char8& InputGrid,
@@ -101,11 +97,19 @@ private:
 
 	// other definitions:
 	struct Subspace{
-		int MinX, MinY, MaxX, MaxY;
-		int RoomCode;
+		uint32_t MinX, MinY, MaxX, MaxY;
+		int RoomCode; // 1. Bedroom, 2. Bathroom, etc.. 
+		int SubspaceCode; // Internal Code to count them
+		Subspace(const Features& feat){
+			MaxX = 0; MaxY = 0; // 0: omran be kar bian!!! aslan nemish 0 beshe hichvaght
+			MinX = feat.Width + 3;
+			MinY = feat.Height + 3;
+			RoomCode = -1;
+			SubspaceCode = -1;
+		}
 	};
 	// Big data parts of the code:
-	std::vector<std::vector<char>> WIP_Grid;
+	std::vector<std::vector<char>> WIP_WGrid;
 	std::vector<Subspace> WS_;
 	std::vector<Subspace> CS_;
 };
