@@ -103,7 +103,7 @@ private:
 	// other definitions:
 	struct Subspace{
 		uint32_t MinX, MinY, MaxX, MaxY;
-		int RoomCode; // in WS_: 1. Bedroom, 2. Bathroom, etc.. 
+		int RoomCode; // in WhiteSpaceList: 1. Bedroom, 2. Bathroom, etc.. 
 		int SubspaceCode; // Internal Code to count them
 		Subspace(const Features& feat){
 			MaxX = 0; MaxY = 0; // 0: omran be kar bian!!! aslan nemish 0 beshe hichvaght
@@ -130,8 +130,8 @@ private:
 	void ClearSharedMemmory();
 	uint32_t ijCoordsto1D(uint32_t, uint32_t);
 	std::vector<std::vector<char>> WIP_WGrid;
-	std::vector<Subspace> WS_;
-		// in WS_: .RoomCode: 1: bedroom, 2: Bathroom
+	std::vector<Subspace> WhiteSpaceList;
+		// in WhiteSpaceList: .RoomCode: 1: bedroom, 2: Bathroom
 	std::vector<Subspace> CS_;
 };
 

@@ -8,7 +8,7 @@ DualGridImplementer::DualGridImplementer(Features feat):
 		Width(feat.Width),Height(feat.Height), SizeOfGridByCM(feat.SizeOfGridByCM), TrueNorth(feat.TrueNorth),
 		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS),
 		WIP_WGrid(feat.Height, std::vector<char>(feat.Width, '-')),
-		WS_(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS, Subspace(feat)) // 2: Bedroom & Bathroom
+		WhiteSpaceList(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS, Subspace(feat)) // 2: Bedroom & Bathroom
 		{
 
 }
@@ -72,7 +72,7 @@ void DualGridImplementer::ClearSharedMemmory(){
 	for (auto &row : WIP_WGrid)
 		for(auto &cell: row)
 			cell = '-';
-	for(auto subs: WS_)
+	for(auto subs: WhiteSpaceList)
 		subs = Subspace(Width, Height); // cleaning the whole mess
 }
 
@@ -107,22 +107,22 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert n < 256
 	#endif
 	for (int i = 0; i < n; i++)
-		WS_[i].RoomCode = i / WhiteSubspacePerRoom + 1;
+		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
 
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
 			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
-			if(ssIndex != -1) WS_[ssIndex].UpdateWith(i, j);
+			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n; it++){
-		if(WS_[it].MaxX != 0){
-			int code = WS_[it].RoomCode;
-			for(uint32_t i = WS_[it].MinX; i < WS_[it].MaxX; i++){
-				for(uint32_t j = WS_[it].MinY; j < WS_[it].MaxY; j++){
+		if(WhiteSpaceList[it].MaxX != 0){
+			int code = WhiteSpaceList[it].RoomCode;
+			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
+				for(uint32_t j = WhiteSpaceList[it].MinY; j < WhiteSpaceList[it].MaxY; j++){
 					if(WIP_WGrid[i][j] == '-'){
 						WIP_WGrid[i][j] = code; // so cute and great!
 					}else if(WIP_WGrid[i][j] != code){
