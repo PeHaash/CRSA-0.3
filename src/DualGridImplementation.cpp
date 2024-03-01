@@ -1,7 +1,7 @@
 #include <vector>
 #include <cmath>
 // #include <algorithm>
-#include "DualGrid.h"
+#include "DualGridImplementation.h"
 
 
 DualGridImplementer::DualGridImplementer(Features feat):
