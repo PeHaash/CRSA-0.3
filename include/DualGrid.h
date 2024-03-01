@@ -90,6 +90,7 @@ private:
 		bool ReadyForImplementaion = false;
 	};
 	ExportPrototype ImplementationCore(
+		bool ForExport,
 		CSA_Char8& InputGrid,
         CSA_Double64& WhiteSpace,
         CSA_Double64& ColoredSpace,
