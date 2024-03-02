@@ -13,8 +13,8 @@ void* c_MakeDGI(Features fet){
 int32_t c_ImplementAndEvaluate(void* DGI, CSA_Char8& InputGrid, CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace,
 		CSA_Double64& WSError, CSA_Double64& CSError, CSA_Double64& Scores){
 
-	InputGrid.data[0] = 'S';
-	return 5;
+	
+	return InputGrid.size;
 
 	return (static_cast<DualGridImplementer*>(DGI))->ImplementAndEvaluate(InputGrid, WhiteSpace, ColoredSpace, WSError,
 			CSError, Scores);
