@@ -79,8 +79,8 @@ void DualGridImplementer::ClearSharedMemmory(){
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
 		CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError,
 		CSA_Double64& Scores){
-	Scores.data[0] = 2;
-	return ExportPrototype{false};
+	Scores.data[1] = 2;
+	// return ExportPrototype{false};
 
 	#ifdef __PEDANTIC__
 		// assert all the Scores are -1
@@ -121,7 +121,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
-// return out;
+return out;
 
 	// assert Overlap
 	int errors_in_overlap = 0;
