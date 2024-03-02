@@ -100,7 +100,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
-	return out;
+	// ta inja ok
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
@@ -110,6 +110,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	for (int i = 0; i < n; i++)
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
 
+	return out;
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
