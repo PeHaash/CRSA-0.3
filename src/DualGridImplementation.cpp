@@ -115,10 +115,10 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
 			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
-			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
+			if(ssIndex != -1) WhiteSpaceList[0].UpdateWith(i, j);
 		}
 
-return out;
+// return out;
 
 	// assert Overlap
 	int errors_in_overlap = 0;
