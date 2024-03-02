@@ -121,6 +121,14 @@ private:
 			RoomCode = -1;
 			SubspaceCode = -1;
 		}
+		void Reset(uint32_t w, uint32_t h){ 
+				// just a way to reset, instead of constructor
+			MaxX = 0; MaxY = 0; // 0: omran be kar bian!!! aslan nemish 0 beshe hichvaght
+			MinX = w + 3;
+			MinY = h + 3;
+			RoomCode = -1;
+			SubspaceCode = -1;
+		}
 		void UpdateWith(uint32_t i, uint32_t j){
 			MinX = std::min(MinX, i);
 			MinY = std::min(MinY, j);
