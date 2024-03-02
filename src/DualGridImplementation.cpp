@@ -114,6 +114,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
+			auto s = WhiteSpace.data[ijCoordsto1D(i, j)];
 			// char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
 			// if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
