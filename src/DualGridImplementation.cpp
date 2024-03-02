@@ -118,6 +118,8 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
+return out;
+
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n; it++){
@@ -145,7 +147,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	}
 
 
-	return out;
+	// ta ghable in
 
 	// Add the Input, and supperimpose it!
 	// check the second objective: UseAllSpaces
