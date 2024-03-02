@@ -116,8 +116,8 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	#endif
 	for (int i = 0; i < n - 1 ; i++){
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
-		kk << i << '\n';
-		kk << WhiteSpaceList[i].MinX << ' ' <<WhiteSpaceList[i].MinY <<' ' << WhiteSpaceList[i].MaxX << ' ' <<WhiteSpaceList[i].MaxY << std::endl;
+		// kk << i << '\n';
+		// kk << WhiteSpaceList[i].MinX << ' ' <<WhiteSpaceList[i].MinY <<' ' << WhiteSpaceList[i].MaxX << ' ' <<WhiteSpaceList[i].MaxY << std::endl;
 		// kk.flush();
 	}
 	// ta inja ok
