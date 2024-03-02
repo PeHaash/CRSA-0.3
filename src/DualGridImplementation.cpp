@@ -121,7 +121,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
-return out;
+
 
 	// assert Overlap
 	int errors_in_overlap = 0;
@@ -148,7 +148,7 @@ return out;
 		// ClearSharedMemmory();
 		return out;
 	}
-
+return out;
 
 	// ta ghable in
 
