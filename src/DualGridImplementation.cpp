@@ -9,7 +9,6 @@ DualGridImplementer::DualGridImplementer(Features feat):
 		WIP_WGrid(feat.Height, std::vector<char>(feat.Width, '-')),
 		WhiteSpaceList(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS, Subspace(feat)) // 2: Bedroom & Bathroom
 		{
-			// WIP_WGrid = std::vector<std::vector<char>> (feat.Height, std::vector<char>(feat.Width, '-'));
 
 }
 
@@ -62,7 +61,7 @@ int32_t DualGridImplementer::ImplementAndExport(CSA_Char8& InputGrid, CSA_Double
 			}
 			ExportGrid.data[ijCoordsto1D(i,j)] = WIP_WGrid[i][j];
 		}
-
+	ClearSharedMemmory();
 	return 0;
 
 }
@@ -79,8 +78,6 @@ void DualGridImplementer::ClearSharedMemmory(){
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
 		CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError,
 		CSA_Double64& Scores){
-	// Scores.data[1] = WIP_WGrid[2][2];
-	// return ExportPrototype{false};
 
 	#ifdef __PEDANTIC__
 		// assert all the Scores are -1
@@ -98,17 +95,13 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert all WSErros, CSError is 0
 	#endif
 
-// std::ofstream kk("log.log");
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
-	// ta inja ok
+
 
 	// WIP_WGrid ro por mikonim
-	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
-// kk <<"N "<<n <<std::endl;
-// kk <<"NUMBER_OF_ROOMS "<<NUMBER_OF_ROOMS<<std::endl;
-// kk << "WhiteSubspacePerRoom "<<WhiteSubspacePerRoom<<std::endl;
+	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible types of space: (n*m)... and empty!
 
 	#ifdef __PEDANTIC__
 		// assert n < 256
@@ -117,7 +110,6 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
 		// kk << i <<'\n';
 	}
-// kk <<"?!"<<std::endl;
 	// ta inja ok
 
 	for (uint32_t i = 0; i < Width; i++)
@@ -126,8 +118,6 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
-	// ta inja ok
-// kk <<"N "<<n <<std::endl	;
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
@@ -138,10 +128,6 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
 				for(uint32_t j = WhiteSpaceList[it].MinY; j < WhiteSpaceList[it].MaxY; j++){
-					// WIP_WGrid[1][1] = 'Z';
-					// errors_in_overlap++;
-					// return out;
-
 					if(WIP_WGrid[i][j] == '-'){
 						WIP_WGrid[i][j] = code; // so cute and great!
 					}else if(WIP_WGrid[i][j] != code){
@@ -155,7 +141,6 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			}
 		}
 	}
-	// ye ja ghable in
 	if(errors_in_overlap != 0){
 		obj->NoOverlapInWS = 0;
 		// ClearSharedMemmory();
