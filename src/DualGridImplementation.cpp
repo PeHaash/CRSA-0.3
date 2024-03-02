@@ -130,7 +130,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
 				for(uint32_t j = WhiteSpaceList[it].MinY; j < WhiteSpaceList[it].MaxY; j++){
-					WIP_WGrid[2][2] = 'Z';
+					// WIP_WGrid[2][2] = 'Z';
 
 						// if(WIP_WGrid[i][j] == '-'){
 						// 	WIP_WGrid[i][j] = code; // so cute and great!
