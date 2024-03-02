@@ -99,7 +99,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert all WSErros, CSError is 0
 	#endif
 
-
+std::ofstream kk("log.log");
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
@@ -107,6 +107,10 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
+	kk <<"N "<<n <<std::endl;
+	kk <<"NUMBER_OF_ROOMS "<<NUMBER_OF_ROOMS<<std::endl;
+	kk << "WhiteSubspacePerRoom "<<WhiteSubspacePerRoom<<std::endl;
+
 	#ifdef __PEDANTIC__
 		// assert n < 256
 	#endif
@@ -123,7 +127,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		}
 
 	// ta inja ok
-	std::ofstream kk("log.log");
+	kk <<"N "<<n <<std::endl;
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
