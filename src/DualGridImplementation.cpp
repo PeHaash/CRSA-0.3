@@ -7,10 +7,10 @@
 DualGridImplementer::DualGridImplementer(Features feat):
 		Width(feat.Width),Height(feat.Height), SizeOfGridByCM(feat.SizeOfGridByCM), TrueNorth(feat.TrueNorth),
 		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS),
-		// WIP_WGrid(feat.Height, std::vector<char>(feat.Width, '-')),
+		WIP_WGrid(feat.Height, std::vector<char>(feat.Width, '-')),
 		WhiteSpaceList(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS, Subspace(feat)) // 2: Bedroom & Bathroom
 		{
-			WIP_WGrid = std::vector<std::vector<char>> (feat.Height, std::vector<char>(feat.Width, '-'));
+			// WIP_WGrid = std::vector<std::vector<char>> (feat.Height, std::vector<char>(feat.Width, '-'));
 
 }
 
