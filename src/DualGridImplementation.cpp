@@ -23,6 +23,7 @@ DualGridImplementer::DualGridImplementer(Features feat):
 }*/
 
 int ConvertToBase(int s, double N){
+	return 3;
 	// convert double N that is in range[0,1) to  an output in range [0...s]
 	// return number [0,s) for N from [0,1)
 	// Ensure the result is within the range [0, s-1]
