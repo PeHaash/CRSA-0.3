@@ -2,7 +2,6 @@
 #include <cmath>
 // #include <algorithm>
 #include "DualGridImplementation.h"
-#include <fstream>
 
 DualGridImplementer::DualGridImplementer(Features feat):
 		Width(feat.Width),Height(feat.Height), SizeOfGridByCM(feat.SizeOfGridByCM), TrueNorth(feat.TrueNorth),
@@ -99,7 +98,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert all WSErros, CSError is 0
 	#endif
 
-std::ofstream kk("log.log");
+// std::ofstream kk("log.log");
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
@@ -132,9 +131,9 @@ std::ofstream kk("log.log");
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
-		kk << it << '\n';
-		kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
-		kk.flush();
+		// kk << it << '\n';
+		// kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
+		// kk.flush();
 		if(WhiteSpaceList[it].MaxX != 0){
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
