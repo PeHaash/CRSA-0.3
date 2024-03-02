@@ -100,6 +100,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
+	return out;
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
