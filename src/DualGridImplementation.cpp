@@ -30,7 +30,7 @@ int ConvertToBase(int s, double N){
 }
 
 uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j){
-	return i * Width + j;
+	return j * Width + i;
 }
 
 int32_t DualGridImplementer::ImplementAndEvaluate(CSA_Char8& InputGrid,CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, 
@@ -114,8 +114,8 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
-			auto s = WhiteSpace.data[ijCoordsto1D(i, j)];
-			// char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
+			// auto s = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)])
+			char ssIndex = char(ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)])) - 1; // -1: empty shit, 0...s*2: white rooms
 			// if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
