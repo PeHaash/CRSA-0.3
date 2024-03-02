@@ -132,6 +132,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
 				for(uint32_t j = WhiteSpaceList[it].MinY; j < WhiteSpaceList[it].MaxY; j++){
 					// WIP_WGrid[1][1] = 'Z';
+					errors_in_overlap++;
 					// return out;
 
 						// if(WIP_WGrid[i][j] == '-'){
@@ -149,7 +150,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	}
 	// ye ja ghable in
 	if(errors_in_overlap != 65){
-		obj->NoOverlapInWS = 11;
+		obj->NoOverlapInWS = errors_in_overlap;
 		// ClearSharedMemmory();
 		return out;
 	}
