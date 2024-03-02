@@ -23,7 +23,7 @@ DualGridImplementer::DualGridImplementer(Features feat):
 }*/
 
 int ConvertToBase(int s, double N){
-	// convert double N that is in range[0,1) to  an output in range [0...s]
+	// convert double N that is in range[0,1) to  an output in range [0...s)
 	// return number [0,s) for N from [0,1)
 	// Ensure the result is within the range [0, s-1]
 	return std::min(static_cast<int>(std::floor(N * s)), s - 1);
@@ -125,7 +125,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 	// assert Overlap
 	int errors_in_overlap = 0;
-	for (int it = 0; it < n; it++){
+	for (int it = 0; it < n-1; it++){
 		if(WhiteSpaceList[it].MaxX != 0){
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
@@ -143,7 +143,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			}
 		}
 	}
-	return out;
+	// ye ja ghable in
 	if(errors_in_overlap != 0){
 		obj->NoOverlapInWS = 0;
 		// ClearSharedMemmory();
@@ -151,7 +151,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	}
 
 
-	// ta ghable in
+	
 
 	// Add the Input, and supperimpose it!
 	// check the second objective: UseAllSpaces
