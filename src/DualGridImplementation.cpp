@@ -121,7 +121,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
-
+	// ta inja ok
 
 	// assert Overlap
 	int errors_in_overlap = 0;
@@ -143,12 +143,13 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			}
 		}
 	}
+	return out;
 	if(errors_in_overlap != 0){
 		obj->NoOverlapInWS = 0;
 		// ClearSharedMemmory();
 		return out;
 	}
-return out;
+
 
 	// ta ghable in
 
