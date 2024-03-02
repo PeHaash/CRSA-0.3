@@ -23,7 +23,6 @@ DualGridImplementer::DualGridImplementer(Features feat):
 }*/
 
 int ConvertToBase(int s, double N){
-	return 3;
 	// convert double N that is in range[0,1) to  an output in range [0...s]
 	// return number [0,s) for N from [0,1)
 	// Ensure the result is within the range [0, s-1]
@@ -115,7 +114,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
-			auto s = ConvertToBase(n, WhiteSpace.data[0]);
+			auto s = ConvertToBase(n, 0.5555);
 			// char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
 			// if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
