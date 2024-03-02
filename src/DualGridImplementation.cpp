@@ -80,7 +80,7 @@ void DualGridImplementer::ClearSharedMemmory(){
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
 		CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError,
 		CSA_Double64& Scores){
-	Scores.data[1] = WIP_WGrid[0].size();
+	Scores.data[1] = WIP_WGrid[0][0];
 	return ExportPrototype{false};
 
 	#ifdef __PEDANTIC__
