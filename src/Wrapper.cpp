@@ -14,7 +14,7 @@ int32_t c_ImplementAndEvaluate(void* DGI, CSA_Char8& InputGrid, CSA_Double64& Wh
 		CSA_Double64& WSError, CSA_Double64& CSError, CSA_Double64& Scores){
 
 	
-	return InputGrid.size;
+	return int64_t(DGI);//InputGrid.size;
 
 	return (static_cast<DualGridImplementer*>(DGI))->ImplementAndEvaluate(InputGrid, WhiteSpace, ColoredSpace, WSError,
 			CSError, Scores);
