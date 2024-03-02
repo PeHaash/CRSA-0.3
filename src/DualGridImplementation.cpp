@@ -123,7 +123,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		}
 
 	// ta inja ok
-		return out;
+
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
@@ -132,6 +132,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
 				for(uint32_t j = WhiteSpaceList[it].MinY; j < WhiteSpaceList[it].MaxY; j++){
 					WIP_WGrid[1][1] = 'Z';
+					return out;
 
 						// if(WIP_WGrid[i][j] == '-'){
 						// 	WIP_WGrid[i][j] = code; // so cute and great!
