@@ -79,8 +79,8 @@ void DualGridImplementer::ClearSharedMemmory(){
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
 		CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError,
 		CSA_Double64& Scores){
-	Scores.data[0] = 2;
-	return ExportPrototype{false};
+	// Scores.data[0] = 2;
+	// return ExportPrototype{false};
 
 	#ifdef __PEDANTIC__
 		// assert all the Scores are -1
@@ -116,12 +116,12 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
-			auto s = ConvertToBase(n, 0.5555);
-			// char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
-			// if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
+			// auto s = ConvertToBase(n, 0.5555);
+			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
+			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
-return out;
+// return out;
 
 	// assert Overlap
 	int errors_in_overlap = 0;
@@ -134,7 +134,7 @@ return out;
 						WIP_WGrid[i][j] = code; // so cute and great!
 					}else if(WIP_WGrid[i][j] != code){
 						// shit :// overlap with another room
-						WSError.data[ijCoordsto1D(i, j)] = 1; // (or ++, idk)
+						WSError.data[ijCoordsto1D(i, j)]++; // (or ++, idk)
 						errors_in_overlap ++;
 					}else{
 						// nothing to do: this means overlap with the same room
