@@ -114,8 +114,10 @@ kk << "WhiteSubspacePerRoom "<<WhiteSubspacePerRoom<<std::endl;
 	#ifdef __PEDANTIC__
 		// assert n < 256
 	#endif
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++){
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
+		kk << i <<'\n';
+	}
 kk <<"?!"<<std::endl;
 	// ta inja ok
 
