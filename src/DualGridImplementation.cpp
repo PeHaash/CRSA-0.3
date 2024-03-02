@@ -3,7 +3,7 @@
 #include <fstream>
 // #include <algorithm>
 #include "DualGridImplementation.h"
-
+	std::ofstream kk("log.log");
 DualGridImplementer::DualGridImplementer(Features feat):
 		Width(feat.Width),Height(feat.Height), SizeOfGridByCM(feat.SizeOfGridByCM), TrueNorth(feat.TrueNorth),
 		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom),
@@ -72,8 +72,14 @@ void DualGridImplementer::ClearSharedMemmory(){
 	for (auto &row : WIP_WGrid)
 		for(auto &cell: row)
 			cell = '-';
-	for(auto subs: WhiteSpaceList)
+	for(auto subs: WhiteSpaceList){
 		subs = Subspace(Width, Height); // cleaning the whole mess
+		kk << "subs";
+	}
+	for(auto subs: WhiteSpaceList){
+		kk << subs.MaxX <<' ';
+	}
+	kk <<std::endl;
 }
 
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
@@ -100,7 +106,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	ExportPrototype out = ExportPrototype{false};
 
 
-	std::ofstream kk("log.log");
+
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible types of space: (n*m)... and empty!
