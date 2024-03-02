@@ -80,7 +80,7 @@ void DualGridImplementer::ClearSharedMemmory(){
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
 		CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError,
 		CSA_Double64& Scores){
-	Scores.data[1] = WIP_WGrid[2][2];
+	// Scores.data[1] = WIP_WGrid[2][2];
 	// return ExportPrototype{false};
 
 	#ifdef __PEDANTIC__
@@ -99,7 +99,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert all WSErros, CSError is 0
 	#endif
 
-// std::ofstream kk("log.log");
+std::ofstream kk("log.log");
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
@@ -132,9 +132,9 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
-		// kk << it << '\n';
-		// kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
-		// kk.flush();
+		kk << it << '\n';
+		kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
+		kk.flush();
 		if(WhiteSpaceList[it].MaxX != 0){
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
