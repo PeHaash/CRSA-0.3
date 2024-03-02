@@ -1,5 +1,6 @@
 #include <vector>
 #include <cmath>
+#include <fstream>
 // #include <algorithm>
 #include "DualGridImplementation.h"
 
@@ -99,6 +100,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	ExportPrototype out = ExportPrototype{false};
 
 
+	std::ofstream kk("log.log");
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible types of space: (n*m)... and empty!
@@ -108,7 +110,9 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	#endif
 	for (int i = 0; i < n - 1 ; i++){
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
-		// kk << i <<'\n';
+		kk << i << '\n';
+		kk << WhiteSpaceList[i].MinX << ' ' <<WhiteSpaceList[i].MinY <<' ' << WhiteSpaceList[i].MaxX << ' ' <<WhiteSpaceList[i].MaxY << std::endl;
+		// kk.flush();
 	}
 	// ta inja ok
 
