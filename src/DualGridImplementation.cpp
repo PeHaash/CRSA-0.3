@@ -99,7 +99,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert all WSErros, CSError is 0
 	#endif
 
-std::ofstream kk("log.log");
+// std::ofstream kk("log.log");
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
@@ -107,60 +107,58 @@ std::ofstream kk("log.log");
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
-kk <<"N "<<n <<std::endl;
-kk <<"NUMBER_OF_ROOMS "<<NUMBER_OF_ROOMS<<std::endl;
-kk << "WhiteSubspacePerRoom "<<WhiteSubspacePerRoom<<std::endl;
+// kk <<"N "<<n <<std::endl;
+// kk <<"NUMBER_OF_ROOMS "<<NUMBER_OF_ROOMS<<std::endl;
+// kk << "WhiteSubspacePerRoom "<<WhiteSubspacePerRoom<<std::endl;
 
 	#ifdef __PEDANTIC__
 		// assert n < 256
 	#endif
-	for (int i = 0; i < n; i++){
+	for (int i = 0; i < n - 1 ; i++){
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
-		kk << i <<'\n';
+		// kk << i <<'\n';
 	}
-kk <<"?!"<<std::endl;
+// kk <<"?!"<<std::endl;
 	// ta inja ok
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
-			// auto s = ConvertToBase(n, 0.5555);
 			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
 			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
 	// ta inja ok
-	kk <<"N "<<n <<std::endl;
+// kk <<"N "<<n <<std::endl	;
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
-		kk << it << '\n';
-		kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
-		kk.flush();
+		// kk << it << '\n';
+		// kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
+		// kk.flush();
 		if(WhiteSpaceList[it].MaxX != 0){
-
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
 				for(uint32_t j = WhiteSpaceList[it].MinY; j < WhiteSpaceList[it].MaxY; j++){
 					// WIP_WGrid[1][1] = 'Z';
-					errors_in_overlap++;
+					// errors_in_overlap++;
 					// return out;
 
-						// if(WIP_WGrid[i][j] == '-'){
-						// 	WIP_WGrid[i][j] = code; // so cute and great!
-						// }else if(WIP_WGrid[i][j] != code){
-						// 	// shit :// overlap with another room
-						// 	WSError.data[ijCoordsto1D(i, j)]++; // (or ++, idk)
-						// 	errors_in_overlap ++;
-						// }else{
-						// 	// nothing to do: this means overlap with the same room
-						// }
+					if(WIP_WGrid[i][j] == '-'){
+						WIP_WGrid[i][j] = code; // so cute and great!
+					}else if(WIP_WGrid[i][j] != code){
+						// shit :// overlap with another room
+						WSError.data[ijCoordsto1D(i, j)]++; // (or ++, idk)
+						errors_in_overlap ++;
+					}else{
+						// nothing to do: this means overlap with the same room
+					}
 				}
 			}
 		}
 	}
 	// ye ja ghable in
 	if(errors_in_overlap != 0){
-		obj->NoOverlapInWS = errors_in_overlap;
+		obj->NoOverlapInWS = 0;
 		// ClearSharedMemmory();
 		return out;
 	}
