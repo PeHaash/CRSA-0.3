@@ -81,7 +81,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError,
 		CSA_Double64& Scores){
 	Scores.data[1] = WIP_WGrid[2][2];
-	return ExportPrototype{false};
+	// return ExportPrototype{false};
 
 	#ifdef __PEDANTIC__
 		// assert all the Scores are -1
@@ -123,7 +123,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		}
 
 	// ta inja ok
-
+		return out;
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
