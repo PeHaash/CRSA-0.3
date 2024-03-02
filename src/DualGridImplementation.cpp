@@ -6,7 +6,7 @@
 
 DualGridImplementer::DualGridImplementer(Features feat):
 		Width(feat.Width),Height(feat.Height), SizeOfGridByCM(feat.SizeOfGridByCM), TrueNorth(feat.TrueNorth),
-		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS),
+		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom),
 		WIP_WGrid(feat.Height, std::vector<char>(feat.Width, '-')),
 		WhiteSpaceList(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS, Subspace(feat)) // 2: Bedroom & Bathroom
 		{
@@ -107,16 +107,16 @@ std::ofstream kk("log.log");
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible counts of 
-	kk <<"N "<<n <<std::endl;
-	kk <<"NUMBER_OF_ROOMS "<<NUMBER_OF_ROOMS<<std::endl;
-	kk << "WhiteSubspacePerRoom "<<WhiteSubspacePerRoom<<std::endl;
+kk <<"N "<<n <<std::endl;
+kk <<"NUMBER_OF_ROOMS "<<NUMBER_OF_ROOMS<<std::endl;
+kk << "WhiteSubspacePerRoom "<<WhiteSubspacePerRoom<<std::endl;
 
 	#ifdef __PEDANTIC__
 		// assert n < 256
 	#endif
 	for (int i = 0; i < n; i++)
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
-
+kk <<"?!"<<std::endl;
 	// ta inja ok
 
 	for (uint32_t i = 0; i < Width; i++)
