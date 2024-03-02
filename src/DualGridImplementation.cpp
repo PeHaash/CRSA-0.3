@@ -128,9 +128,10 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
 		kk << it << '\n';
+		kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
+		kk.flush();
 		if(WhiteSpaceList[it].MaxX != 0){
-			kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
-			kk.flush();
+
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
 				for(uint32_t j = WhiteSpaceList[it].MinY; j < WhiteSpaceList[it].MaxY; j++){
