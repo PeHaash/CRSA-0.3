@@ -110,7 +110,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	for (int i = 0; i < n; i++)
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
 
-	return out;
+	// ta inja ok
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
@@ -143,6 +143,9 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// ClearSharedMemmory();
 		return out;
 	}
+
+
+	return out;
 
 	// Add the Input, and supperimpose it!
 	// check the second objective: UseAllSpaces
