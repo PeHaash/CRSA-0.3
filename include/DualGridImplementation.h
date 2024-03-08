@@ -70,21 +70,25 @@ public:
 	DualGridImplementer(Features);
 
 	// int32_t SetFeature(Features); later
+	/*
+		Inputdata: a tensor, X,Y,channel
+		[:,:,0]: whiteSpaces
+		[:,:,1]: coloredSpaces
 
+		Errors: a tensor, X, Y, Channel
+		[:,:,0]: whiteSpaces Error
+		[:,:,1]: coloredSpaces Error	
+	*/
 	int32_t ImplementAndEvaluate(
 		CSA_Char8& InputGrid,
-		CSA_Double64& WhiteSpace,
-		CSA_Double64& ColoredSpace,
-		CSA_Double64& WSError, 
-		CSA_Double64& CSError,
+		CSA_Double64& InputData,
+		CSA_Double64& Errors, 
 		CSA_Double64& Scores);
 
 	int32_t ImplementAndExport(
 		CSA_Char8& InputGrid,
-		CSA_Double64& WhiteSpace,
-		CSA_Double64& ColoredSpace,
-		CSA_Double64& WSError, 
-		CSA_Double64& CSError,
+		CSA_Double64& InputData,
+		CSA_Double64& Errors, 
 		CSA_Double64& Scores,
 		CSA_Char8& ExportGrid);
 private:
@@ -94,10 +98,8 @@ private:
 	ExportPrototype ImplementationCore(
 		bool ForExport,
 		CSA_Char8& InputGrid,
-		CSA_Double64& WhiteSpace,
-		CSA_Double64& ColoredSpace,
-		CSA_Double64& WSError, 
-		CSA_Double64& CSError,
+		CSA_Double64& InputData,
+		CSA_Double64& Erros, 
 		CSA_Double64& Scores);
 	// I think maybe better than keeping in the private methods of class, because ... no meaning
 
@@ -138,7 +140,7 @@ private:
 	};
 	// Big data parts of the code:
 	void ClearSharedMemmory();
-	uint32_t ijCoordsto1D(uint32_t, uint32_t);
+	uint32_t ijCoordsto1D(uint32_t, uint32_t,uint32_t, uint32_t); // i,j,k, & channel count: 1: 2d, other numbers, 3d
 	std::vector<std::vector<char>> WIP_WGrid;
 	std::vector<Subspace> WhiteSpaceList;
 		// in WhiteSpaceList: .RoomCode: 1: bedroom, 2: Bathroom
