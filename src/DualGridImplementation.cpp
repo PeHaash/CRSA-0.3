@@ -29,25 +29,29 @@ int ConvertToBase(int s, double N){
 	return std::min(static_cast<int>(std::floor(N * s)), s - 1);
 }
 
-uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j){
-	return j * Width + i;
+uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j, uint32_t channel = 0, uint32_t channel_count = 1){
+	// return j * Width + i;
+	// if channel == 1: become the Good-old j*W+i
+	return i * channel_count + j * Width * channel_count + channel;
 }
 
-int32_t DualGridImplementer::ImplementAndEvaluate(CSA_Char8& InputGrid,CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, 
-		CSA_Double64& WSError, CSA_Double64& CSError, CSA_Double64& Scores){
-	ImplementationCore(false, InputGrid, WhiteSpace, ColoredSpace, WSError, CSError, Scores);
+// uint32_t DualGridImplementer::GridCoordsto1D();
+
+int32_t DualGridImplementer::ImplementAndEvaluate(CSA_Char8& InputGrid,CSA_Double64& InputData, CSA_Double64& Errors, 
+		CSA_Double64& Scores){
+	ImplementationCore(false, InputGrid, InputData, Errors, Scores);
 	ClearSharedMemmory();
 	return 0;
 }
 
-int32_t DualGridImplementer::ImplementAndExport(CSA_Char8& InputGrid, CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace,
-		CSA_Double64& WSError, CSA_Double64& CSError, CSA_Double64& Scores, CSA_Char8& ExportGrid){
+int32_t DualGridImplementer::ImplementAndExport(CSA_Char8& InputGrid, CSA_Double64& InputData,
+		CSA_Double64& Errors, CSA_Double64& Scores, CSA_Char8& ExportGrid){
 	
 	#ifdef __PEDANTIC__
 		// Assert the correct size of ExportGrid
 	#endif
 
-	ExportPrototype imp = ImplementationCore(true, InputGrid, WhiteSpace, ColoredSpace, WSError, CSError, Scores);
+	ExportPrototype imp = ImplementationCore(true, InputGrid, InputData, Errors, Scores);
 	if(imp.ReadyForImplementaion == false) return 1;
 
 	for (uint32_t i = 0; i < Width; i++)
@@ -83,7 +87,7 @@ void DualGridImplementer::ClearSharedMemmory(){
 }
 
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
-		CSA_Double64& WhiteSpace, CSA_Double64& ColoredSpace, CSA_Double64& WSError, CSA_Double64& CSError,
+		CSA_Double64& InputData, CSA_Double64& Errors,
 		CSA_Double64& Scores){
 
 	#ifdef __PEDANTIC__
@@ -116,24 +120,19 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	#endif
 	for (int i = 0; i < n - 1 ; i++){
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
-		// kk << i << '\n';
-		// kk << WhiteSpaceList[i].MinX << ' ' <<WhiteSpaceList[i].MinY <<' ' << WhiteSpaceList[i].MaxX << ' ' <<WhiteSpaceList[i].MaxY << std::endl;
-		// kk.flush();
 	}
 	// ta inja ok
 
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
-			char ssIndex = ConvertToBase(n, WhiteSpace.data[ijCoordsto1D(i, j)]) - 1; // -1: empty shit, 0...s*2: white rooms
+			char ssIndex = ConvertToBase(n, InputData.data[ijCoordsto1D(i, j, 0, 2)]) - 1;
+					// -1: empty shit, 0...s*2: white rooms
 			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
 		}
 
 	// assert Overlap
 	int errors_in_overlap = 0;
 	for (int it = 0; it < n-1; it++){
-		// kk << it << '\n';
-		// kk << WhiteSpaceList[it].MinX << ' ' <<WhiteSpaceList[it].MinY <<' ' << WhiteSpaceList[it].MaxX << ' ' <<WhiteSpaceList[it].MaxY << std::endl;
-		// kk.flush();
 		if(WhiteSpaceList[it].MaxX != 0){
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
@@ -142,7 +141,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 						WIP_WGrid[i][j] = code; // so cute and great!
 					}else if(WIP_WGrid[i][j] != code){
 						// shit :// overlap with another room
-						WSError.data[ijCoordsto1D(i, j)]++; // (or ++, idk)
+						Errors.data[ijCoordsto1D(i, j, 0, 2)]++; // ++: to show how bad is this
 						errors_in_overlap ++;
 					}else{
 						// nothing to do: this means overlap with the same room
@@ -174,7 +173,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 				available_grids_count++;
 				if(WIP_WGrid[i][j]=='-'){
 					unused_grids_count++;
-					WSError.data[ijCoordsto1D(i, j)]++;
+					Errors.data[ijCoordsto1D(i, j, 0, 1)]++;
 				}
 			}
 		}
