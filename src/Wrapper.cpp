@@ -12,14 +12,13 @@ void* c_MakeDGI(Features fet){
 // }
 
 
-int32_t c_ImplementAndEvaluate(void* DGI, CSA_Char8 InputGrid, CSA_Double64 InputData, CSA_Double64 Errors, CSA_Double64 Scores){
+int32_t c_ImplementAndEvaluate(void* DGI, CSA_Char8 InputGrid, CSA_Double64 InputData, CSA_Double64 Scores){
 
-	return (static_cast<DualGridImplementer*>(DGI))->ImplementAndEvaluate(InputGrid, InputData, Errors, Scores);
+	return (static_cast<DualGridImplementer*>(DGI))->ImplementAndEvaluate(InputGrid, InputData, Scores);
 }
 
-int32_t c_ImplementAndExport(void* DGI, CSA_Char8 InputGrid, CSA_Double64 InputData, CSA_Double64 Errors,
-		CSA_Double64 Scores, CSA_Char8 ExportGrid){
-	return (static_cast<DualGridImplementer*>(DGI))->ImplementAndExport(InputGrid, InputData, Errors, Scores, ExportGrid);
+int32_t c_ImplementAndExport(void* DGI, CSA_Char8 InputGrid, CSA_Double64 InputData, CSA_Double64 Scores, CSA_Char8 ExportGrid){
+	return (static_cast<DualGridImplementer*>(DGI))->ImplementAndExport(InputGrid, InputData, Scores, ExportGrid);
 }
 
 int32_t c_DeleteDGI(void* p){

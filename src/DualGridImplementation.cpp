@@ -37,21 +37,20 @@ uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j, uint32_t chan
 
 // uint32_t DualGridImplementer::GridCoordsto1D();
 
-int32_t DualGridImplementer::ImplementAndEvaluate(CSA_Char8& InputGrid,CSA_Double64& InputData, CSA_Double64& Errors, 
-		CSA_Double64& Scores){
-	ImplementationCore(false, InputGrid, InputData, Errors, Scores);
+int32_t DualGridImplementer::ImplementAndEvaluate(CSA_Char8& InputGrid,CSA_Double64& InputData, CSA_Double64& Scores){
+	ImplementationCore(false, InputGrid, InputData, Scores);
 	ClearSharedMemmory();
 	return 0;
 }
 
-int32_t DualGridImplementer::ImplementAndExport(CSA_Char8& InputGrid, CSA_Double64& InputData,
-		CSA_Double64& Errors, CSA_Double64& Scores, CSA_Char8& ExportGrid){
+int32_t DualGridImplementer::ImplementAndExport(CSA_Char8& InputGrid, CSA_Double64& InputData, CSA_Double64& Scores,
+		CSA_Char8& ExportGrid){
 	
 	#ifdef __PEDANTIC__
 		// Assert the correct size of ExportGrid
 	#endif
 
-	ExportPrototype imp = ImplementationCore(true, InputGrid, InputData, Errors, Scores);
+	ExportPrototype imp = ImplementationCore(true, InputGrid, InputData, Scores);
 	if(imp.ReadyForImplementaion == false) return 1;
 
 	for (uint32_t i = 0; i < Width; i++)
@@ -87,11 +86,10 @@ void DualGridImplementer::ClearSharedMemmory(){
 }
 
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
-		CSA_Double64& InputData, CSA_Double64& Errors,
-		CSA_Double64& Scores){
+		CSA_Double64& InputData, CSA_Double64& Scores){
 
 	#ifdef __PEDANTIC__
-		// assert all the Scores are -1
+		// assert all the Scores are -1 @@@@@ WE SHOOULD ASSERT!!!! THERE ARE NO WAYT THAT THE CODE CLEAN IT
 	#endif
 
 	#ifdef __PEDANTIC__
@@ -141,7 +139,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 						WIP_WGrid[i][j] = code; // so cute and great!
 					}else if(WIP_WGrid[i][j] != code){
 						// shit :// overlap with another room
-						Errors.data[ijCoordsto1D(i, j, 0, 2)]++; // ++: to show how bad is this
+						// Errors.data[ijCoordsto1D(i, j, 0, 2)]++; // ++: to show how bad is this
 						errors_in_overlap ++;
 					}else{
 						// nothing to do: this means overlap with the same room
@@ -173,7 +171,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 				available_grids_count++;
 				if(WIP_WGrid[i][j]=='-'){
 					unused_grids_count++;
-					Errors.data[ijCoordsto1D(i, j, 0, 1)]++;
+					// Errors.data[ijCoordsto1D(i, j, 0, 1)]++;
 				}
 			}
 		}

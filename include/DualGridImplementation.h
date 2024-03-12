@@ -75,20 +75,16 @@ public:
 		[:,:,0]: whiteSpaces
 		[:,:,1]: coloredSpaces
 
-		Errors: a tensor, X, Y, Channel
-		[:,:,0]: whiteSpaces Error
-		[:,:,1]: coloredSpaces Error	
+	
 	*/
 	int32_t ImplementAndEvaluate(
 		CSA_Char8& InputGrid,
 		CSA_Double64& InputData,
-		CSA_Double64& Errors, 
 		CSA_Double64& Scores);
 
 	int32_t ImplementAndExport(
 		CSA_Char8& InputGrid,
 		CSA_Double64& InputData,
-		CSA_Double64& Errors, 
 		CSA_Double64& Scores,
 		CSA_Char8& ExportGrid);
 private:
@@ -99,7 +95,6 @@ private:
 		bool ForExport,
 		CSA_Char8& InputGrid,
 		CSA_Double64& InputData,
-		CSA_Double64& Erros, 
 		CSA_Double64& Scores);
 	// I think maybe better than keeping in the private methods of class, because ... no meaning
 
