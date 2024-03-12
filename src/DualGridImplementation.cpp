@@ -146,7 +146,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 
 	// check Overlap
-	int errors_in_overlap = 0, inactive_white_space = 0;
+	uint32_t errors_in_overlap = 0, inactive_white_space = 0;
 	for (int it = 0; it < n - 1; it++){
 		if(WhiteSpaceList[it].MaxX != 0){
 			int code = WhiteSpaceList[it].RoomCode;
