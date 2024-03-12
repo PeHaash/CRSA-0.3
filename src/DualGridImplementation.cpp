@@ -169,7 +169,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		}
 	}
 	obj->AllWhitespcaseShouldBeActive = (double)(n - 1 - inactive_white_space) / (double)(n - 1);
-	obj->NoOverlapsInWhiteSpaces = (double)(Height * Width - errors_in_overlap) / (double)(Height * Width);
+	obj->NoOverlapsInWhiteSpaces = (double)(errors_in_overlap) / (double)(Height * Width * (NUMBER_OF_ROOMS-1));
 
 	if(errors_in_overlap != 0){
 		// return out;

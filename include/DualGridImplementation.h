@@ -17,7 +17,7 @@
 #include "CSharedArrays.h"
 
 // consts:
-const uint32_t NUMBER_OF_ROOMS = 2;
+const uint32_t NUMBER_OF_ROOMS = 3;
 
 
 // kamel nist
