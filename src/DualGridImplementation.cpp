@@ -199,8 +199,8 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 	// obj->UseAllSpaces = unused_grids_count / available_grids_count;
 
-	for (uint32_t i = 0; i < Width; i++)
-		for(uint32_t j = 0; j < Height; j++){
+	// for (uint32_t i = 0; i < Width; i++)
+	// 	for(uint32_t j = 0; j < Height; j++){
 
 
 
