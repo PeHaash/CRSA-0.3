@@ -22,8 +22,16 @@ const uint32_t NUMBER_OF_ROOMS = 2;
 
 // kamel nist
 struct Objectives{
-	double NoOverlapInWS;
-	double UseAllSpaces;
+		// intrinsit Objectives:						// 
+	double UseCorrectAmountOfSpaceInWhitespace;			// [x] To make overlaps less common, ~80% should be free
+	double NoOverlapsInWhiteSpaces;						// [x]
+	double AllWhitespcaseShouldBeActive;				// [x] Every part, so 
+	// double UseAllSpaces;								// [ ] Spaces should be all used, for when the inputs are obstructed
+	double AllWhitespacesOfSameRoomAreConnected;		// [ ] rooms are connected in the same room 
+	double WholePlanShouldBeConnected;					// [ ] 
+	double NoOverlapsInColoredSpaces;					// [ ] ...
+	double ColoreSpacesInTheCorrectRespectiveRoom;		// [ ] be in the correct room!
+
 	// // first part:
 	// double NoRoomInTheBOA;  // 'B'lockec, 'O'utside, 'A'ccess
 	// double NoOverlapInWS;       // The most important part
@@ -32,22 +40,7 @@ struct Objectives{
 	// double CirculationAccessAll;
 };
 
-// just guidelines
-/*
-struct InputData{
-	CSA_Char8 InputGrid;
-	CSA_Double64 WhiteSpace, ColoredSpace;
-};
 
-struct OutputForEvaluation{
-	CSA_Double64 WSError, CSError;
-	CSA_Double64 Scores;
-};
-
-struct OutputForExport{
-	CSA_Double64 Export;
-};
-*/
 
 struct Features{
 	uint32_t Width, Height;
@@ -69,7 +62,7 @@ private:
 public:
 	DualGridImplementer(Features);
 
-	// int32_t SetFeature(Features); later
+	// int32_t SetFeature(Features); // NO SET FEATURES IN THE CURRENT ARCHITECTURE
 	/*
 		Inputdata: a tensor, X,Y,channel
 		[:,:,0]: whiteSpaces

@@ -29,6 +29,19 @@ int ConvertToBase(int s, double N){
 	return std::min(static_cast<int>(std::floor(N * s)), s - 1);
 }
 
+double MappedScore(double min_num, double goal_num, double max_num, double status){
+	// the idea is status is in a [min,max] range, and
+	// MappedScore(min) = 0
+	// MappedScore(max) = 0
+	// MappedScore(goal) = 1
+	// (because it is peaked in that point)
+	// for now, the chart you can see the graph is here: https://www.desmos.com/calculator/xb4xtnndqf
+	return std::min(
+		(status - goal_num) / (goal_num - min_num),
+		(goal_num - status) / (max_num - goal_num)) + 1;
+}
+
+
 uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j, uint32_t channel = 0, uint32_t channel_count = 1){
 	// return j * Width + i;
 	// if channel == 1: become the Good-old j*W+i
@@ -39,7 +52,6 @@ uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j, uint32_t chan
 
 int32_t DualGridImplementer::ImplementAndEvaluate(CSA_Char8& InputGrid,CSA_Double64& InputData, CSA_Double64& Scores){
 	ImplementationCore(false, InputGrid, InputData, Scores);
-	ClearSharedMemmory();
 	return 0;
 }
 
@@ -65,7 +77,6 @@ int32_t DualGridImplementer::ImplementAndExport(CSA_Char8& InputGrid, CSA_Double
 			}
 			ExportGrid.data[ijCoordsto1D(i,j)] = WIP_WGrid[i][j];
 		}
-	ClearSharedMemmory();
 	return 0;
 
 }
@@ -88,9 +99,6 @@ void DualGridImplementer::ClearSharedMemmory(){
 DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(bool ForExport, CSA_Char8& InputGrid, 
 		CSA_Double64& InputData, CSA_Double64& Scores){
 
-	#ifdef __PEDANTIC__
-		// assert all the Scores are -1 @@@@@ WE SHOOULD ASSERT!!!! THERE ARE NO WAYT THAT THE CODE CLEAN IT
-	#endif
 
 	#ifdef __PEDANTIC__
 		// assert the correct sizes of inputs
@@ -104,33 +112,42 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert all WSErros, CSError is 0
 	#endif
 
+	ClearSharedMemmory(); // because this is the main chockpoint for Using here
 	Objectives* obj = reinterpret_cast<Objectives*>(Scores.data);
 	ExportPrototype out = ExportPrototype{false};
 
-
-
+	for(uint32_t i = 0; i < Scores.size; i++){
+		Scores.data[i] = 0; // scores are 0!
+	}
 
 	// WIP_WGrid ro por mikonim
 	int n = NUMBER_OF_ROOMS * WhiteSubspacePerRoom + 1; // n: whole possible types of space: (n*m)... and empty!
 
 	#ifdef __PEDANTIC__
-		// assert n < 256
+		// assert n < 65 (65 is 'A')
 	#endif
+	
 	for (int i = 0; i < n - 1 ; i++){
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
 	}
-	// ta inja ok
-
+	
+	double free_spaces = 0;
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
 			char ssIndex = ConvertToBase(n, InputData.data[ijCoordsto1D(i, j, 0, 2)]) - 1;
 					// -1: empty shit, 0...s*2: white rooms
-			if(ssIndex != -1) WhiteSpaceList[ssIndex].UpdateWith(i, j);
+			if(ssIndex != -1)
+				WhiteSpaceList[ssIndex].UpdateWith(i, j);
+			else
+				free_spaces ++;
 		}
+	free_spaces = free_spaces / (Height * Width); // 80% should be free!
+	obj->UseCorrectAmountOfSpaceInWhitespace = MappedScore(0, 0.8, 1, free_spaces);
 
-	// assert Overlap
-	int errors_in_overlap = 0;
-	for (int it = 0; it < n-1; it++){
+
+	// check Overlap
+	int errors_in_overlap = 0, inactive_white_space = 0;
+	for (int it = 0; it < n - 1; it++){
 		if(WhiteSpaceList[it].MaxX != 0){
 			int code = WhiteSpaceList[it].RoomCode;
 			for(uint32_t i = WhiteSpaceList[it].MinX; i < WhiteSpaceList[it].MaxX; i++){
@@ -147,11 +164,15 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 				}
 			}
 		}
+		else{
+			inactive_white_space ++;
+		}
 	}
+	obj->AllWhitespcaseShouldBeActive = (double)(n - 1 - inactive_white_space) / (double)(n - 1);
+	obj->NoOverlapsInWhiteSpaces = (double)(Height * Width - errors_in_overlap) / (double)(Height * Width);
+
 	if(errors_in_overlap != 0){
-		obj->NoOverlapInWS = 0;
-		// ClearSharedMemmory();
-		return out;
+		// return out;
 	}
 
 
@@ -176,8 +197,10 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			}
 		}
 
-	obj->UseAllSpaces = unused_grids_count / available_grids_count;
+	// obj->UseAllSpaces = unused_grids_count / available_grids_count;
 
+	for (uint32_t i = 0; i < Width; i++)
+		for(uint32_t j = 0; j < Height; j++){
 
 
 
