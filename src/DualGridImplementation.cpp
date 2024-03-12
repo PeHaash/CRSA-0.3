@@ -2,6 +2,8 @@
 #include <cmath>
 #include <fstream>
 // #include <algorithm>
+#include <numeric>			// for std::accumulate
+
 #include "DualGridImplementation.h"
 	// std::ofstream kk("log.log");
 DualGridImplementer::DualGridImplementer(Features feat):
@@ -146,7 +148,10 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 
 
 	// check Overlap
-	uint32_t errors_in_overlap = 0, inactive_white_space = 0;
+
+	uint32_t errors_in_overlap = 0;
+	uint32_t inactive_white_space = 0;
+	std::vector<int> overlapped(Height * Width, 0);
 	for (int it = 0; it < n - 1; it++){
 		if(WhiteSpaceList[it].MaxX != 0){
 			int code = WhiteSpaceList[it].RoomCode;
@@ -156,8 +161,8 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 						WIP_WGrid[i][j] = code; // so cute and great!
 					}else if(WIP_WGrid[i][j] != code){
 						// shit :// overlap with another room
-						// Errors.data[ijCoordsto1D(i, j, 0, 2)]++; // ++: to show how bad is this
-						errors_in_overlap ++;
+						overlapped [ijCoordsto1D(i, j)] = 1;
+						// errors_in_overlap ++;
 					}else{
 						// nothing to do: this means overlap with the same room
 					}
@@ -168,12 +173,14 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 			inactive_white_space ++;
 		}
 	}
-	obj->AllWhitespcaseShouldBeActive = (double)(n - 1 - inactive_white_space) / (double)(n - 1);
-	obj->NoOverlapsInWhiteSpaces = (double)(errors_in_overlap) / (double)(Height * Width * (NUMBER_OF_ROOMS-1));
 
-	if(errors_in_overlap != 0){
-		// return out;
-	}
+	obj->AllWhitespcaseShouldBeActive = (double)(n - 1 - inactive_white_space) / (double)(n - 1);
+	errors_in_overlap = std::accumulate(overlapped.begin(),overlapped.end(),0);
+	obj->NoOverlapsInWhiteSpaces = (double)(Height * Width - errors_in_overlap) / (double)(Height * Width);
+
+	// if(errors_in_overlap != 0){
+	// 	// return out;
+	// }
 
 
 	
