@@ -182,7 +182,7 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	// 	// return out;
 	// }
 
-
+	return out;
 	
 
 	// Add the Input, and supperimpose it!
