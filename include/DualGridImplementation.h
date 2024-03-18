@@ -18,7 +18,8 @@
 
 // consts:
 const uint32_t NUMBER_OF_ROOMS = 3;
-
+const uint32_t SUBSPACE_PER_ROOM = 3;
+const uint32_t COLORED_SPACES_PER_ROOM = 1;
 
 // kamel nist
 struct Objectives{
@@ -27,6 +28,11 @@ struct Objectives{
 	double NoOverlapsInWhiteSpaces;						// [x]
 	double AllWhitespcaseShouldBeActive;				// [x] Every part, so 
 	// double UseAllSpaces;								// [ ] Spaces should be all used, for when the inputs are obstructed
+	double SubspaceAreaUnderCertainPercentage[SUBSPACE_PER_ROOM * NUMBER_OF_ROOMS];
+														// [x] subspaces are not that big, challenge for the surrogate, under 30%
+	double ColoredSpacesAreaUnderCertainPercentage [COLORED_SPACES_PER_ROOM * NUMBER_OF_ROOMS];
+														// [ ] colored spaces are smaller than 15% of the whole
+		// until here!!
 	double AllWhitespacesOfSameRoomAreConnected;		// [ ] rooms are connected in the same room 
 	double WholePlanShouldBeConnected;					// [ ] 
 	double NoOverlapsInColoredSpaces;					// [ ] ...
@@ -47,7 +53,7 @@ struct Features{
 	double SizeOfGridByCM;  // cm: default 10
 	double TrueNorth;       // radian, True north ()
 
-	uint32_t WhiteSubspacePerRoom; // subspace per WS
+	uint32_t WhiteSubspacePerRoom; // subspace per WS (alan begiresh vali karish nakon!!!!!!)
 };
 
 
@@ -124,6 +130,10 @@ private:
 			MinY = std::min(MinY, j);
 			MaxX = std::max(MaxX, i + 1);
 			MaxY = std::max(MaxY, j + 1);
+		}
+
+		double Area(){
+			return (MaxX - MinX) * (MaxY - MinY);
 		}
 	};
 	// Big data parts of the code:

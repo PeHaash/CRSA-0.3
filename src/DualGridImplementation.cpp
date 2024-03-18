@@ -8,9 +8,9 @@
 	// std::ofstream kk("log.log");
 DualGridImplementer::DualGridImplementer(Features feat):
 		Width(feat.Width),Height(feat.Height), SizeOfGridByCM(feat.SizeOfGridByCM), TrueNorth(feat.TrueNorth),
-		WhiteSubspacePerRoom(feat.WhiteSubspacePerRoom),
+		WhiteSubspacePerRoom(/*feat.WhiteSubspacePerRoom*/SUBSPACE_PER_ROOM),
 		WIP_WGrid(feat.Height, std::vector<char>(feat.Width, '-')),
-		WhiteSpaceList(feat.WhiteSubspacePerRoom * NUMBER_OF_ROOMS, Subspace(feat)) // 2: Bedroom & Bathroom
+		WhiteSpaceList(/*feat.WhiteSubspacePerRoom*/ SUBSPACE_PER_ROOM * NUMBER_OF_ROOMS, Subspace(feat))
 		{
 
 }
@@ -129,10 +129,12 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 		// assert n < 65 (65 is 'A')
 	#endif
 	
+	// set room codes in WhiteSpaceList
 	for (int i = 0; i < n - 1 ; i++){
 		WhiteSpaceList[i].RoomCode = i / WhiteSubspacePerRoom + 1;
 	}
 	
+	// count free_spaces + update the grid & find the size of each one
 	double free_spaces = 0;
 	for (uint32_t i = 0; i < Width; i++)
 		for(uint32_t j = 0; j < Height; j++){
@@ -146,9 +148,17 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	free_spaces = free_spaces / (Height * Width); // 80% should be free!
 	obj->UseCorrectAmountOfSpaceInWhitespace = MappedScore(0, 0.8, 1, free_spaces);
 
+	// set the SubspaceAreaUnderCertainPercentage
+	double MaxOkArea = Width * Height * 0.3;
+	for(int it = 0; it < n - 1; it++){
+		if(WhiteSpaceList[it].MaxX != 0){
+			// it is active!
+			obj->SubspaceAreaUnderCertainPercentage[it] = (WhiteSpaceList[it].Area() < MaxOkArea)?1:0;
+		}
+	}
+
 
 	// check Overlap
-
 	uint32_t errors_in_overlap = 0;
 	uint32_t inactive_white_space = 0;
 	std::vector<int> overlapped(Height * Width, 0);
