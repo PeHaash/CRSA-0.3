@@ -43,6 +43,9 @@ double MappedScore(double min_num, double goal_num, double max_num, double statu
 		(goal_num - status) / (max_num - goal_num)) + 1;
 }
 
+double MappedScoreBeUnderTres(double num, double treshold, double max_possible){
+	return (num < treshold)?1: (-(num / (max_possible - treshold)) + (max_possible / (max_possible - treshold)));
+}
 
 uint32_t DualGridImplementer::ijCoordsto1D(uint32_t i, uint32_t j, uint32_t channel = 0, uint32_t channel_count = 1){
 	// return j * Width + i;
@@ -149,11 +152,12 @@ DualGridImplementer::ExportPrototype DualGridImplementer::ImplementationCore(boo
 	obj->UseCorrectAmountOfSpaceInWhitespace = MappedScore(0, 0.8, 1, free_spaces);
 
 	// set the SubspaceAreaUnderCertainPercentage
-	double MaxOkArea = Width * Height * 0.3;
+	double Area = Width * Height, MaxOkArea = Width * Height * 0.3;
 	for(int it = 0; it < n - 1; it++){
 		if(WhiteSpaceList[it].MaxX != 0){
 			// it is active!
-			obj->SubspaceAreaUnderCertainPercentage[it] = (WhiteSpaceList[it].Area() < MaxOkArea)?1:0;
+			obj->SubspaceAreaUnderCertainPercentage[it] = MappedScoreBeUnderTres(WhiteSpaceList[it].Area(), MaxOkArea, Area);
+			 // (WhiteSpaceList[it].Area() < MaxOkArea)?1:0;
 		}
 	}
 
